@@ -19,7 +19,7 @@ function guageChart(selectedID) {
                 marker: {size: 30, color:'850000'},
                 showlegend: false,
                 name: 'Frequency',
-                text: level,
+                // text: level,
                 hoverinfo: 'text+name'
         };
 
@@ -42,21 +42,23 @@ function guageChart(selectedID) {
                         "rgba(164, 215, 120, 0.6)", "rgba(174, 220, 90, 0.6)", "rgba(184, 225, 200, 0.6)", "white"]
             },
         };
-        var level = wfreq;
+        var freq = parseInt(wfreq);
+        console.log(`'freq : ${wfreq}`)
         // var degrees = ((180/9) * level) , radius = .4;
-        var degrees = (180 - (20*level)) , radius = .4;
+        //// var degrees = (180 - (20 * freq)) , radius = .4;
+        var degrees = 9-freq, radius = .5;
         console.log(`degrees:   ${degrees}`);
-        var radians = degrees * Math.PI / 180;
+        var radians = degrees * Math.PI / 10;
         var x = radius * Math.cos(radians);
         var y = radius * Math.sin(radians);
 
-        var path1 = (degrees < 45 || degrees > 135) ? 'M -0.0 -0.025 L 0.0 0.025 L ' : 'M -0.025 -0.0 L 0.025 0.0 L ';
+        // var path1 = (degrees < 45 || degrees > 135) ? 'M -0.0 -0.025 L 0.0 0.025 L ' : 'M -0.025 -0.0 L 0.025 0.0 L ';
         // Path: may have to change to create a better triangle
-        var mainPath = path1,
+        var mainPath = "M -0.0 -0.025 L 0.0 0.025 L"  // path1,
             pathX = String(x),
             space = ' ',
             pathY = String(y),
-            pathEnd = 'Z';
+            pathEnd = ' Z';
         var path = mainPath.concat(pathX,space,pathY,pathEnd);
 
 // Trig to calc meter point
@@ -67,10 +69,6 @@ function guageChart(selectedID) {
             shapes:[{
                 type: 'path',
                 path: path,
-                // x0: 0,
-                // y0: 0,
-                // x1: 0.5,
-                // y1: 0.5,
                 fillcolor: '850000',
                 line: {
                   color: '850000',
@@ -78,54 +76,12 @@ function guageChart(selectedID) {
                 }
               }],
             title: `Belly Button Washing Frequency \n Scrubs per week`,
-            // xaxis: {visible: false, range: [-1, 1]},
             xaxis: {zeroline:false, showticklabels:false, showgrid: false, range: [-1, 1]},
             yaxis: {zeroline:false, showticklabels:false, showgrid: false, range: [-1, 1]}
-            // yaxis: {visible: false, range: [-1, 1]}
           };
-// // var layout = {
-//     shapes:[{
-//         type: 'path',
-//         path: path,
-//         fillcolor: '850000',
-//         line: {
-//           color: '850000'
-//         }
-//       }],
-//     height: 400,
-//     width: 400,
-//     xaxis: {zeroline:false, showticklabels:false,
-//                showgrid: false, range: [-1, 1]},
-//     yaxis: {zeroline:false, showticklabels:false,
-//                showgrid: false, range: [-1, 1]}
-//   };
-  
-
-        // var degrees = 115, radius = .2;
-        // var radians = degrees * Math.PI / 180;
-        // var x = -1 * radius * Math.cos(radians);
-        // var y = radius * Math.sin(radians);
-
-        // var layout = {
-        //     shapes: [{
-        //         type: 'line',
-        //         x0: 0,
-        //         y0: 0,
-        //         x1: wfreq,
-        //         y1: 0.5,
-        //         line: {
-        //             color: 'black',
-        //             width: 8
-        //         }
-        //     }],
-        //     title: 'Number of Printers Sold in a Week',
-        //     xaxis: { visible: false, range: [-1, 1] },
-        //     yaxis: { visible: false, range: [-1, 1] }
-        // };
 
         var data = [traceN, traceD];
-        // Plotly.plot("gauge", data, layout);
-        Plotly.plot("gauge", data, layout, { staticPlot: true });
+        Plotly.newPlot("gauge", data, layout);
     });
 }
 
