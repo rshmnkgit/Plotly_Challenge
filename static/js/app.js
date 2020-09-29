@@ -1,12 +1,8 @@
-// retrieve all the data elements from a specific column of the dataset
-// function unpack(rows, index) {
-//     return rows.map(function (row) {
-//         return row[index];
-//     });
-// }
+var dataFile = "./data/samples.json"
 
 // Fetch the JSON data and console log it
-d3.json("samples.json").then(function (dataSample) {
+// d3.json("samples.json").then(function (dataSample) {
+d3.json(dataFile).then(function (dataSample) {    
     console.log(dataSample);
     dataSample.names.forEach(name => { name
         // console.log(name);
@@ -16,41 +12,12 @@ d3.json("samples.json").then(function (dataSample) {
     });
 });
 
-// Plot the bar chart based on the dropdown item selected
-function optionChanged(selectedId){
-    // d3.json("samples.json").then(function (dataSample) {        
-        
-    //     var dataObj = dataSample.samples.filter(data => data.id === selectedId)[0];
-    //     // dataObj = dataObj.reverse();
-    //     console.log(dataObj);
-
-    //     var trace1 = {
-    //         x: dataObj.sample_values.slice(0,10).reverse(),
-    //         y: dataObj.otu_ids.slice(0, 10).map(d => `OTU ${d}`).reverse(),
-    //         text: dataObj.otu_ids.slice(0,10),
-    //         type: "bar",
-    //         orientation:"h"
-    //     };
-
-    //     data = [trace1]
-    //     layout = {
-    //         title: "Bar Chart",
-    //     }
-
-    //     Plotly.newPlot("bar", data, layout);
-
-        barChart(selectedId);
-        bubbleChart(selectedId);
-        demography(selectedId);
-    // });    
-}
-
 function barChart(selectedId){
-    d3.json("samples.json").then(function (dataSample) {        
-        
+    // d3.json("samples.json").then(function (dataSample) {        
+    d3.json(dataFile).then(function (dataSample) {    
         var dataObj = dataSample.samples.filter(data => data.id === selectedId)[0];
         // dataObj = dataObj.reverse();
-        console.log(dataObj);
+        // console.log(dataObj);
 
         var trace1 = {
             x: dataObj.sample_values.slice(0,10).reverse(),
@@ -70,11 +37,10 @@ function barChart(selectedId){
 }
 
 function bubbleChart(selectedId){
-    d3.json("samples.json").then(function (dataSample) {        
-        
+    // d3.json("samples.json").then(function (dataSample) {   
+    d3.json(dataFile).then(function (dataSample) {         
         var dataObj = dataSample.samples.filter(data => data.id === selectedId)[0];
-        // dataObj = dataObj.reverse();
-        console.log(dataObj);
+        // console.log(dataObj);
 
         var trace2 = {
             y: dataObj.sample_values,
@@ -93,8 +59,33 @@ function bubbleChart(selectedId){
     });    
 }
 
+function pieChart(selectedId){
+    // d3.json("samples.json").then(function (dataSample) {   
+    d3.json(dataFile).then(function (dataSample) {         
+        var dataObj = dataSample.samples.filter(data => data.id === selectedId)[0];
+        // console.log(dataObj);
+
+        var traceP = {
+            values: dataObj.sample_values.slice(0,10).reverse(),
+            labels: dataObj.otu_ids.slice(0,10).reverse(),
+            // text: dataObj.otu_labels.slice(0,10).reverse(),
+            type:"pie",
+            mode: "pie",
+            marker: {size: dataObj.sample_values, color: dataObj.otu_ids}
+        };
+
+        data = [traceP]
+        layout = {
+            title: "Pie Chart",
+        }
+
+        Plotly.newPlot("pie", data, layout);
+    });    
+}
+
 function demography(selectedId) {
-    d3.json("samples.json").then(function (dataSample) {                
+    // d3.json("samples.json").then(function (dataSample) {    
+    d3.json(dataFile).then(function (dataSample) {            
         var dataObj = dataSample.metadata.filter(data => data.id.toString() === selectedId);
         console.log("------- Metadata Obj ---------")
         console.log(dataObj);
@@ -109,14 +100,26 @@ function demography(selectedId) {
     });
 }
 
+// Plot the bar chart based on the dropdown item selected
+function optionChanged(selectedId){
+    pieChart(selectedId);
+    barChart(selectedId);
+    bubbleChart(selectedId);
+    demography(selectedId); 
+    guageChart(selectedId);    
+}
+
 function init() {
-    d3.json("samples.json").then(function (dataSample) {                
+    // d3.json("samples.json").then(function (dataSample) {
+    d3.json(dataFile).then(function (dataSample) {    
         var firstId = dataSample.metadata[0].id.toString();
         console.log(`first id :  ${firstId}`);
 
+        pieChart(firstId);
         demography(firstId);
         barChart(firstId);
         bubbleChart(firstId);
+        guageChart(firstId);
     });
 }
 
