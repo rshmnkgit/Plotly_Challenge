@@ -37,9 +37,9 @@ function guageChart(selectedID) {
             textposition: "inside",
             hoverinfo: "label",
             marker: {
-                colors: ["rgba(255, 0, 0, 0.6)", "rgba(255, 165, 0, 0.6)", "rgba(255, 255, 0, 0.6)", 
+                colors: ["rgba(220, 20, 20, 0.6)", "rgba(255, 165, 0, 0.6)", "rgba(255, 255, 0, 0.6)", 
                         "rgba(144, 238, 144, 0.6)", "rgba(154, 55, 180, 0.6)","rgba(154, 90, 120, 0.6)", 
-                        "rgba(164, 215, 120, 0.6)", "rgba(174, 220, 90, 0.6)", "rgba(184, 225, 200, 0.6)", "white"]
+                        "rgba(4, 215, 120, 0.6)", "rgba(94, 225, 90, 0.6)", "rgba(24, 225, 5, 0.6)", "white"]
             },
         };
         var freq = parseInt(wfreq);
@@ -47,25 +47,33 @@ function guageChart(selectedID) {
         // var degrees = ((180/9) * level) , radius = .4;
         //// var degrees = (180 - (20 * freq)) , radius = .4;
         var degrees = 9-freq, radius = .5;
-        console.log(`degrees:   ${degrees}`);
         var radians = degrees * Math.PI / 10;
         var x = radius * Math.cos(radians);
         var y = radius * Math.sin(radians);
 
+        console.log(`degrees:   ${degrees}`);
+        console.log(`radians:   ${radians}`);
+        console.log(`x:   ${x}`);
+        console.log(`y:   ${y}`);
+
+        // var path = path = (degrees < 45 || degrees > 135) ? 'M -0.0 -0.025 L 0.0 0.025 L `X` `Y` Z' : 'M -0.025 -0.0 L 0.025 0.0 L `X` `Y` Z'
         // var path1 = (degrees < 45 || degrees > 135) ? 'M -0.0 -0.025 L 0.0 0.025 L ' : 'M -0.025 -0.0 L 0.025 0.0 L ';
         // Path: may have to change to create a better triangle
-        var mainPath = "M -0.0 -0.025 L 0.0 0.025 L"  // path1,
-            pathX = String(x),
+        var mainPath = "M -0.0 -0.025 L 0.0 0.025 L "  // path1, 
+        // var mainPath = path1,
+            pathX = String(x), 
             space = ' ',
             pathY = String(y),
             pathEnd = ' Z';
         var path = mainPath.concat(pathX,space,pathY,pathEnd);
 
+        console.log(`path:   ${path}`);
+
 // Trig to calc meter point
 
         var layout = {
-            height : 600,
-            width: 800,
+            height : 550,
+            width: 550,
             shapes:[{
                 type: 'path',
                 path: path,
@@ -75,7 +83,7 @@ function guageChart(selectedID) {
                   width: 8
                 }
               }],
-            title: `Belly Button Washing Frequency \n Scrubs per week`,
+            title: `<b> Belly Button Washing Frequency </b> <br> Scrubs per week`,
             xaxis: {zeroline:false, showticklabels:false, showgrid: false, range: [-1, 1]},
             yaxis: {zeroline:false, showticklabels:false, showgrid: false, range: [-1, 1]}
           };

@@ -29,7 +29,9 @@ function barChart(selectedId){
 
         data = [trace1]
         layout = {
-            title: "Bar Chart",
+            title: "Sample Valuues for Top Ten OTU IDs",
+            xaxis: {title:"Sample Values"},
+            yaxis: {title: "IDs"}
         }
 
         Plotly.newPlot("bar", data, layout);
@@ -52,9 +54,10 @@ function bubbleChart(selectedId){
 
         data = [trace2]
         layout = {
-            title: "Bubble Chart",
+            title: "Sample Valuues vs OTU IDs",
+            xaxis: {title:"OTU IDs"},
+            yaxis: {title: "Sample Values"}
         }
-
         Plotly.newPlot("bubble", data, layout);
     });    
 }
@@ -76,9 +79,8 @@ function pieChart(selectedId){
 
         data = [traceP]
         layout = {
-            title: "Pie Chart",
+            title: "Sample Valuues for Top Ten OTU IDs"
         }
-
         Plotly.newPlot("pie", data, layout);
     });    
 }
