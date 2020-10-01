@@ -1,9 +1,9 @@
+// Get the path of the data file
 var dataFile = "./data/samples.json"
 
 
+// Function to create a gauge chart
 function guageChart(selectedID) {
-    // var gaugeDiv = document.getElementById("gauge-chart");
-    // d3.select("#gaugeID").html("");
     d3.json(dataFile).then(function (dataSample) {
         var dataObj = dataSample.metadata.filter(data => data.id.toString() === selectedID)[0];
         console.log("----- Guage -------")
@@ -13,23 +13,22 @@ function guageChart(selectedID) {
         console.log(`wfreq:  ${wfreq}`);
         console.log("-------------------")        
 
+        // Set the attributes for the gauge needle
         var traceN = {
              type: 'scatter',
                 x: [0], y:[0],
                 marker: {size: 30, color:'850000'},
                 showlegend: false,
                 name: 'Frequency',
-                // text: level,
                 hoverinfo: 'text+name'
         };
 
+        // Set the attributes for the nine sections for the gauge
         var traceD = {
-            type: "pie",
-            
+            type: "pie",            
             showlegend: false,
             hole: 0.6,
             rotation: 90,
-            // values: [100 / 5, 100 / 5, 100 / 5, 100 / 5, 100 / 5, 100],
             values:[180/9, 180/9, 180/9, 180/9, 180/9, 180/9, 180/9, 180/9, 180/9, 180],
             text: ["0-1", "1-2", "2-3", "3-4", "4-5", "5-6", "6-7", "7-8", "8-9", ""],
             direction: "clockwise",
@@ -44,8 +43,7 @@ function guageChart(selectedID) {
         };
         var freq = parseInt(wfreq);
         console.log(`'freq : ${wfreq}`)
-        // var degrees = ((180/9) * level) , radius = .4;
-        //// var degrees = (180 - (20 * freq)) , radius = .4;
+
         var degrees = 9-freq, radius = .5;
         var radians = degrees * Math.PI / 10;
         var x = radius * Math.cos(radians);
@@ -69,8 +67,7 @@ function guageChart(selectedID) {
 
         console.log(`path:   ${path}`);
 
-// Trig to calc meter point
-
+        // Trig to calc meter point
         var layout = {
             height : 550,
             width: 550,
@@ -88,6 +85,7 @@ function guageChart(selectedID) {
             yaxis: {zeroline:false, showticklabels:false, showgrid: false, range: [-1, 1]}
           };
 
+        // Define the data for the plot
         var data = [traceN, traceD];
         Plotly.newPlot("gauge", data, layout);
     });

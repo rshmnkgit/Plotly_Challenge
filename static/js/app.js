@@ -1,25 +1,25 @@
+// Get the path of the data file and store into a variable
 var dataFile = "./data/samples.json"
 
-// Fetch the JSON data and console log it
-// d3.json("samples.json").then(function (dataSample) {
+// Fetch the JSON data and print it on the console
 d3.json(dataFile).then(function (dataSample) {    
     console.log(dataSample);
     dataSample.names.forEach(name => { name
-        // console.log(name);
+        console.log(`name:  ${name}`);
         d3.select("#selDataset")
             .append("option")
             .text(name)
     });
 });
 
+// Retrieve the top ten sample values for the selected ID and plot a horizontal bar chart
 function barChart(selectedId){
-    // d3.json("samples.json").then(function (dataSample) {        
     d3.json(dataFile).then(function (dataSample) {    
         var dataObj = dataSample.samples.filter(data => data.id === selectedId)[0];
-        // dataObj = dataObj.reverse();
-        // console.log(dataObj);
+        console.log(dataObj);
 
         var trace1 = {
+            // Get the ten sample values and sort in the reverse order
             x: dataObj.sample_values.slice(0,10).reverse(),
             y: dataObj.otu_ids.slice(0, 10).map(d => `OTU ${d}`).reverse(),
             text: dataObj.otu_ids.slice(0,10),
@@ -38,11 +38,11 @@ function barChart(selectedId){
     });
 }
 
+// Retrieve all the sample values for the selected ID and plot a bubble chart
 function bubbleChart(selectedId){
-    // d3.json("samples.json").then(function (dataSample) {   
     d3.json(dataFile).then(function (dataSample) {         
         var dataObj = dataSample.samples.filter(data => data.id === selectedId)[0];
-        // console.log(dataObj);
+        console.log(dataObj);
 
         var trace2 = {
             y: dataObj.sample_values,
@@ -62,16 +62,15 @@ function bubbleChart(selectedId){
     });    
 }
 
+// Retrieve and plot a pie chart for the top ten saple vaues from the dataset for the selected ID
 function pieChart(selectedId){
-    // d3.json("samples.json").then(function (dataSample) {   
     d3.json(dataFile).then(function (dataSample) {         
         var dataObj = dataSample.samples.filter(data => data.id === selectedId)[0];
-        // console.log(dataObj);
+        console.log(dataObj);
 
         var traceP = {
             values: dataObj.sample_values.slice(0,10).reverse(),
             labels: dataObj.otu_ids.slice(0,10).reverse(),
-            // text: dataObj.otu_labels.slice(0,10).reverse(),
             type:"pie",
             mode: "pie",
             marker: {size: dataObj.sample_values, color: dataObj.otu_ids}
@@ -85,8 +84,8 @@ function pieChart(selectedId){
     });    
 }
 
+// Retrieve and display the demographic metadat from the dataset for the selected ID
 function demography(selectedId) {
-    // d3.json("samples.json").then(function (dataSample) {    
     d3.json(dataFile).then(function (dataSample) {            
         var dataObj = dataSample.metadata.filter(data => data.id.toString() === selectedId);
         console.log("------- Metadata Obj ---------")
@@ -111,8 +110,8 @@ function optionChanged(selectedId){
     guageChart(selectedId);    
 }
 
+// Initialize the webpage with the charts corresponding to the first OTU Id from the dataset
 function init() {
-    // d3.json("samples.json").then(function (dataSample) {
     d3.json(dataFile).then(function (dataSample) {    
         var firstId = dataSample.metadata[0].id.toString();
         console.log(`first id :  ${firstId}`);
@@ -125,4 +124,5 @@ function init() {
     });
 }
 
+// Call the init function on the page load
 init();
